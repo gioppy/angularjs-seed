@@ -1,0 +1,1 @@
+This directory is reserved all of the shared resorces, like services od directives.

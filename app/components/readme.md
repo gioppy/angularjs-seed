@@ -1,0 +1,1 @@
+This directory is reserved all specific components. Split every component in a single directory.

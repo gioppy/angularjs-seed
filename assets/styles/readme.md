@@ -1,0 +1,1 @@
+This directory is reserved for generated style sheets form SCSS. **IMPORTANT**: pass from scss folder!
