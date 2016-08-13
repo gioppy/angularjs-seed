@@ -1,0 +1,22 @@
+{
+  "name": "angular-seed",
+  "description": "AngularJS seed project",
+  "main": "index.html",
+  "authors": [
+    "gioppy <tech@giovannibuffa.it>"
+  ],
+  "license": "ISC",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "assets/library",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "angularjs#^1.5.8"
+  }
+}
