@@ -4,19 +4,32 @@
   "description": "AngularJS seed project",
   "main": "index.html",
   "scripts": {
-    "start": "lite-server && gulp watch"
+    "dev": "gulp dev:clean && gulp dev",
+    "dist": "gulp dist:clean && gulp dist"
   },
-  "author": "",
+  "author": "Giovanni Buffa",
   "license": "ISC",
   "devDependencies": {
     "autoprefixer": "^6.4.0",
+    "del": "^2.2.2",
     "gulp": "^3.9.1",
+    "gulp-clean": "^0.3.2",
     "gulp-combine-mq": "^0.4.0",
+    "gulp-concat": "^2.6.0",
     "gulp-cssmin": "^0.1.7",
+    "gulp-html-replace": "^1.6.1",
     "gulp-postcss": "^6.1.1",
     "gulp-rename": "^1.2.2",
     "gulp-sass": "^2.3.2",
     "gulp-uglify": "^2.0.0",
     "lite-server": "^2.2.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gioppy@github.com/gioppy/angularjs-seed.git"
+  },
+  "bugs": {
+    "url": "https://github.com/gioppy/angularjs-seed/issues"
+  },
+  "homepage": "https://github.com/gioppy/angularjs-seed#readme"
 }

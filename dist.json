@@ -1,0 +1,16 @@
+{
+  "htmlreplace": {
+    "cssvendor": "assets/libraries/vendor.min.css",
+    "cssbundle": "assets/styles/bundle.min.css",
+    "jsbundle": "app/bundle.min.js",
+    "jsvendor": "assets/libraries/vendor.min.js"
+  },
+  "bundle": {
+    "css": [],
+    "js": []
+  },
+  "vendor": {
+    "css": [],
+    "js": []
+  }
+}
