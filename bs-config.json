@@ -1,3 +1,4 @@
 {
-  "server": { "baseDir": "./dev" }
+  "server": { "baseDir": "./dev" },
+  "reloadDelay": 500
 }
