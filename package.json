@@ -4,8 +4,9 @@
   "description": "AngularJS seed project",
   "main": "index.html",
   "scripts": {
-    "dev": "gulp dev:clean && gulp dev",
-    "dist": "gulp dist:clean && gulp dist"
+    "server": "lite-server",
+    "dev": "gulp dev",
+    "dist": "gulp dist"
   },
   "author": "Giovanni Buffa",
   "license": "ISC",
@@ -22,7 +23,8 @@
     "gulp-rename": "^1.2.2",
     "gulp-sass": "^2.3.2",
     "gulp-uglify": "^2.0.0",
-    "lite-server": "^2.2.2"
+    "lite-server": "^2.2.2",
+    "run-sequence": "^1.2.2"
   },
   "repository": {
     "type": "git",

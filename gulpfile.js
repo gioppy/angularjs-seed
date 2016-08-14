@@ -10,6 +10,7 @@ var htmlreplace = require('gulp-html-replace');
 var clean = require('gulp-clean');
 var concat = require('gulp-concat');
 var del = require('del');
+var runSequece = require('run-sequence');
 var exec = require('child_process').exec;
 
 var opt = require('./dist.json');
@@ -94,7 +95,7 @@ gulp.task('struct', function(){
 });
 
 gulp.task('lite-server', function(cb){
-  exec('npm start', function (err, stdout, stderr) {
+  exec('npm run server', function (err, stdout, stderr) {
     console.log(stdout);
     console.log(stderr);
     cb(err);
@@ -107,7 +108,16 @@ gulp.task('watch', function(){
   gulp.watch(['index.html', 'app/**/*.min.js', 'assets/**/*.min.js', 'assets/**/*.min.css'], ['struct']);
 });
 
-gulp.task('dev', ['dev:clean', 'struct', 'styles', 'scripts', 'watch', 'lite-server']);
+gulp.task('dev', (cb) => {
+  runSequece(
+    'dev:clean',
+    ['styles', 'scripts'],
+    'struct',
+    'watch',
+    'lite-server',
+    cb
+  );
+});
 
 /* DIST PROCESS */
 
@@ -146,13 +156,12 @@ gulp.task('html', function(){
     .pipe(gulp.dest('./dist/'));
 });
 
-gulp.task('dist', [
-  'dist:clean',
-  'styles',
-  'scripts',
-  'dist:styles:vendor',
-  'dist:styles:bundle',
-  'dist:scripts:vendor',
-  'dist:scripts:bundle',
-  'html'
-]);
+gulp.task('dist', (cb) => {
+  runSequece(
+    'dist:clean',
+    ['styles', 'scripts'],
+    ['dist:styles:vendor', 'dist:styles:bundle', 'dist:scripts:vendor', 'dist:scripts:bundle'],
+    'html',
+    cb
+  );
+});
