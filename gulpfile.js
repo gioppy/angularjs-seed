@@ -95,6 +95,7 @@ gulp.task('struct', function(){
     'index.html',
     '!**/*.md',
     'app/**/*.min.js',
+    'app/**/*.html',
     'assets/**/*.min.js',
     'assets/**/*.min.css',
     'assets/images/*'
@@ -114,7 +115,7 @@ gulp.task('watch', function(){
   gulp.watch(['assets/scss/*.scss', 'assets/scss/**/*.scss'], ['styles']);
   gulp.watch(['assets/fonts/*.scss'], ['fonts']);
   gulp.watch(['assets/scripts/*.js', '!assets/scripts/*.min.js', 'app/**/*.js', '!app/**/*.min.js'], ['scripts']);
-  gulp.watch(['index.html', 'app/**/*.min.js', 'assets/**/*.min.js', 'assets/**/*.min.css'], ['struct']);
+  gulp.watch(['index.html', 'app/**/*.html', 'app/**/*.min.js', 'assets/**/*.min.js', 'assets/**/*.min.css'], ['struct']);
 });
 
 gulp.task('dev', (cb) => {
@@ -160,6 +161,11 @@ gulp.task('dist:scripts:bundle', function(){
 });
 
 gulp.task('html', function(){
+  return gulp.src('app/**/*')
+    .pipe(gulp.dest('./dist/app'));
+});
+
+gulp.task('index', function(){
   return gulp.src('index.html')
     .pipe(htmlreplace(opt.htmlreplace))
     .pipe(gulp.dest('./dist/'));
@@ -177,7 +183,7 @@ gulp.task('dist', (cb) => {
     ['styles', 'fonts', 'scripts'],
     ['dist:styles:vendor', 'dist:styles:bundle', 'dist:scripts:vendor', 'dist:scripts:bundle'],
     'images',
-    'html',
+    ['html', 'index'],
     cb
   );
 });
