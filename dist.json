@@ -6,7 +6,10 @@
     "jsvendor": "assets/libraries/vendor.min.js"
   },
   "bundle": {
-    "css": [],
+    "css": [
+      "assets/fonts/fonts.min.css",
+      "assets/styles/style.min.css"
+    ],
     "js": []
   },
   "vendor": {

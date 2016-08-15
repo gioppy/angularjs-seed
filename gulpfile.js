@@ -5,24 +5,16 @@ var rename = require('gulp-rename');
 var cssmin = require('gulp-cssmin');
 var uglify = require('gulp-uglify');
 var postcss = require('gulp-postcss');
-var autoprefixer = require('autoprefixer');
+var imageMin = require('gulp-imagemin');
 var htmlreplace = require('gulp-html-replace');
 var clean = require('gulp-clean');
 var concat = require('gulp-concat');
+var autoprefixer = require('autoprefixer');
 var del = require('del');
 var runSequece = require('run-sequence');
 var exec = require('child_process').exec;
 
 var opt = require('./dist.json');
-
-gulp.task('fonts', function(){
-  return gulp.src('assets/fonts/fonts.scss')
-    .pipe(sass({
-      outputStyle: 'compressed'
-    }).on('error', sass.logError))
-    .pipe(rename({suffix: '.min'}))
-    .pipe(gulp.dest('assets/fonts'));
-});
 
 /* COMMON PROCESS */
 
@@ -61,6 +53,15 @@ gulp.task('styles', ['combine'], function(){
   return e;
 });
 
+gulp.task('fonts', function(){
+  return gulp.src('assets/fonts/fonts.scss')
+    .pipe(sass({
+      outputStyle: 'compressed'
+    }).on('error', sass.logError))
+    .pipe(rename({suffix: '.min'}))
+    .pipe(gulp.dest('assets/fonts'));
+});
+
 gulp.task('scripts', function(){
   return gulp.src(['assets/scripts/*.js', '!assets/scripts/*.min.js', 'app/**/*.js', '!app/**/*.min.js'])
     .pipe(uglify({
@@ -90,7 +91,14 @@ gulp.task('dev:clean', function(){
 });
 
 gulp.task('struct', function(){
-  return gulp.src(['index.html', 'app/**/*.min.js', 'assets/**/*.min.js', 'assets/**/*.min.css'], {base: './'})
+  return gulp.src([
+    'index.html',
+    '!**/*.md',
+    'app/**/*.min.js',
+    'assets/**/*.min.js',
+    'assets/**/*.min.css',
+    'assets/images/*'
+  ], {base: './'})
     .pipe(gulp.dest('dev'));
 });
 
@@ -104,6 +112,7 @@ gulp.task('lite-server', function(cb){
 
 gulp.task('watch', function(){
   gulp.watch(['assets/scss/*.scss', 'assets/scss/**/*.scss'], ['styles']);
+  gulp.watch(['assets/fonts/*.scss'], ['fonts']);
   gulp.watch(['assets/scripts/*.js', '!assets/scripts/*.min.js', 'app/**/*.js', '!app/**/*.min.js'], ['scripts']);
   gulp.watch(['index.html', 'app/**/*.min.js', 'assets/**/*.min.js', 'assets/**/*.min.css'], ['struct']);
 });
@@ -111,7 +120,7 @@ gulp.task('watch', function(){
 gulp.task('dev', (cb) => {
   runSequece(
     'dev:clean',
-    ['styles', 'scripts'],
+    ['styles', 'fonts', 'scripts'],
     'struct',
     'watch',
     'lite-server',
@@ -156,11 +165,18 @@ gulp.task('html', function(){
     .pipe(gulp.dest('./dist/'));
 });
 
+gulp.task('images', function(){
+  return gulp.src(['assets/images/*', '!assets/images/*.md'])
+    .pipe(imageMin())
+    .pipe(gulp.dest('./dist/assets/images/'));
+});
+
 gulp.task('dist', (cb) => {
   runSequece(
     'dist:clean',
-    ['styles', 'scripts'],
+    ['styles', 'fonts', 'scripts'],
     ['dist:styles:vendor', 'dist:styles:bundle', 'dist:scripts:vendor', 'dist:scripts:bundle'],
+    'images',
     'html',
     cb
   );
