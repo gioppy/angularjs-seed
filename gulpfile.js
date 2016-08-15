@@ -14,7 +14,7 @@ var del = require('del');
 var runSequece = require('run-sequence');
 var exec = require('child_process').exec;
 
-var opt = require('./dist.json');
+var opt = require('./configs/dist.json');
 
 /* COMMON PROCESS */
 
@@ -83,6 +83,31 @@ gulp.task('scripts', function(){
     }));
 });
 
+/* LOCAL PROCESS */
+
+gulp.task('local:lite-server', function(cb){
+  exec('npm run start', function (err, stdout, stderr) {
+    console.log(stdout);
+    console.log(stderr);
+    cb(err);
+  });
+});
+
+gulp.task('local:watch', function(){
+  gulp.watch(['assets/scss/*.scss', 'assets/scss/**/*.scss'], ['styles']);
+  gulp.watch(['assets/fonts/*.scss'], ['fonts']);
+  gulp.watch(['assets/scripts/*.js', '!assets/scripts/*.min.js', 'app/**/*.js', '!app/**/*.min.js'], ['scripts']);
+});
+
+gulp.task('local', (cb) => {
+  runSequece(
+    ['styles', 'fonts', 'scripts'],
+    'local:watch',
+    'local:lite-server',
+    cb
+  );
+});
+
 /* DEV PROCESS */
 
 gulp.task('dev:clean', function(){
@@ -103,7 +128,7 @@ gulp.task('struct', function(){
     .pipe(gulp.dest('dev'));
 });
 
-gulp.task('lite-server', function(cb){
+gulp.task('dev:lite-server', function(cb){
   exec('npm run server', function (err, stdout, stderr) {
     console.log(stdout);
     console.log(stderr);
@@ -111,7 +136,7 @@ gulp.task('lite-server', function(cb){
   });
 });
 
-gulp.task('watch', function(){
+gulp.task('dev:watch', function(){
   gulp.watch(['assets/scss/*.scss', 'assets/scss/**/*.scss'], ['styles']);
   gulp.watch(['assets/fonts/*.scss'], ['fonts']);
   gulp.watch(['assets/scripts/*.js', '!assets/scripts/*.min.js', 'app/**/*.js', '!app/**/*.min.js'], ['scripts']);
@@ -123,8 +148,8 @@ gulp.task('dev', (cb) => {
     'dev:clean',
     ['styles', 'fonts', 'scripts'],
     'struct',
-    'watch',
-    'lite-server',
+    'dev:watch',
+    'dev:lite-server',
     cb
   );
 });

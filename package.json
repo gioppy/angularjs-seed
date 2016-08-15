@@ -4,7 +4,8 @@
   "description": "AngularJS seed project",
   "main": "index.html",
   "scripts": {
-    "server": "lite-server",
+    "start": "lite-server -c configs/bs-config.local.json",
+    "server": "lite-server -c configs/bs-config.json",
     "dev": "gulp dev",
     "dist": "gulp dist"
   },
