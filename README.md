@@ -7,11 +7,11 @@ Before using this project, you must install NodeJS (>= 4.4.5) and npm. You can d
 ### Step 2: install dependencies
 You must install two npm modules globally, `gulp` and `bower`:
 ```
-    sudo npm install -g gulp bower
+  sudo npm install -g gulp bower
 ```
 Optionally, you can install even a third module globally, `lite-server`:
 ```
-    sudo npm install -g lite-server
+  sudo npm install -g lite-server
 ```
 but is not required.
 Remeber to use `sudo` only if you are on UNIX system!
@@ -19,11 +19,11 @@ Remeber to use `sudo` only if you are on UNIX system!
 Download this repository as package or cloning via git.
 After that, move to the folder via terminal:
 ```
-    cd path/to/folder
+  cd path/to/folder
 ```
 and install all the local dependencies:
 ```
-    npm install
+  npm install
 ```
 Note the sudo is not required for local packages. However, if you have permession errors, you can use `sudo` or try to resolve the permission errors.
 ### Step 4: install libraries
@@ -33,30 +33,30 @@ Actually, there is only one library dependency: AngularJS. To install, just type
 ```
 All the libraries are saved on _assets/libraries_ folder. If you want to change the libraries folder, you must edit the _.bowerrc_ file in the root folder, and change:
 ```
-    {
-        "directory": "assets/libraries"
-    }
+  {
+    "directory": "assets/libraries"
+  }
 ```
 ### Step 5: environments
 There is three main environments: **local**, **dev** and **dist**. To use any of the environments you can be in the root folder on terminal.
 
 **local** is used only on my courses, so you don't really need this!
 ```
-    gulp local
+  gulp local
 ```
 **dev** is used for development. In this environment, there is a [lite-server](https://github.com/johnpapa/lite-server) that simulate a real web server. All the compiled files (Javscript and CSS) are automatically saved on _dev_ folder.
 ```
-    gulp dev
+  gulp dev
 ```
 **Important**: you don't edit or working on any files in this folder. The folder is re-created when you modify or add a file in the working directories.
 
 If you need to remove the _dev_ folder, you can execute on terminal:
 ```
-    gulp dev:clean
+  gulp dev:clean
 ```
 **dist** is used for final release. This environment create all the necessary files for publishing the app, in the folder _dist_.
 ```
-    gulp dist
+  gulp dist
 ```
 Before run this task, you must edit the file `configs/dist.json` and add all the necessary files.
 The file has 3 main sections:
@@ -66,49 +66,49 @@ The file has 3 main sections:
 
 For example, if you have this files on your application:
 ```
-    app -
-        |- app.module.min.js
-        |- app.config.min.js
-        |- user -
-                |- user.controller.min.js
-    assets -
-        |- styles -
-            |- style.min.css
-        |- libraries -
-            |- angular.min.js
-            |- bootstrap -
-                |- bootstrap.min.css
-                |- bootstrap.min.js
+  app -
+      |- app.module.min.js
+      |- app.config.min.js
+      |- user -
+              |- user.controller.min.js
+  assets -
+      |- styles -
+          |- style.min.css
+      |- libraries -
+          |- angular.min.js
+          |- bootstrap -
+              |- bootstrap.min.css
+              |- bootstrap.min.js
 ```
 the `dist.json` must be:
 ```
-    {
-      "htmlreplace": {
-        "cssvendor": "assets/libraries/vendor.min.css",
-        "cssbundle": "assets/styles/bundle.min.css",
-        "jsbundle": "app/bundle.min.js",
-        "jsvendor": "assets/libraries/vendor.min.js"
-      },
-      "bundle": {
-        "css": [
-          "assets/styles/style.min.css"
-        ],
-        "js": [
-          "app/app.module.min.js",
-          "app/app.config.min.js",
-          "app/user/user.controller.min.js"
-        ]
-      },
-      "vendor": {
-        "css": [
-          "assets/libraries/bootstrap.min.css"
-        ],
-        "js": [
-          "assets/libraries/angular.min.js",
-          "assets/libraries/bootstrap.min.js"
-        ]
-      }
+  {
+    "htmlreplace": {
+      "cssvendor": "assets/libraries/vendor.min.css",
+      "cssbundle": "assets/styles/bundle.min.css",
+      "jsbundle": "app/bundle.min.js",
+      "jsvendor": "assets/libraries/vendor.min.js"
+    },
+    "bundle": {
+      "css": [
+        "assets/styles/style.min.css"
+      ],
+      "js": [
+        "app/app.module.min.js",
+        "app/app.config.min.js",
+        "app/user/user.controller.min.js"
+      ]
+    },
+    "vendor": {
+      "css": [
+        "assets/libraries/bootstrap.min.css"
+      ],
+      "js": [
+        "assets/libraries/angular.min.js",
+        "assets/libraries/bootstrap.min.js"
+      ]
     }
+  }
 ```
 **Important**: the order of the files is very important! If you declare a module before the inclusion of the Angular library you can get an error.
 
@@ -122,8 +122,20 @@ This generat 4 files:
 
 If you need to remove the _dist_ folder, you can execute on terminal:
 ```
-    gulp dist:clean
+  gulp dist:clean
 ```
+### Optional: JSON server
+If you want to work with a fake JSON Api, you can use [JSON Server](https://github.com/typicode/json-server). The seed is just configured for using json-server: you must install the package globally
+```
+  npm install -g json-server
+```
+and add your data in `json-server/db.json`. The server works with a simple JSON file, so you can test/mock your data easily. Please, refer to the json-server documentation on all of the possibilities.
+
+Once you have installed the package, you can start the server with
+```
+  npm run db
+```
+The server run on localhost, on port 3002.
 ## TODO
 - [ ] Add testing frameworks
-- [ ] Integrate with [json-server](https://github.com/typicode/json-server) for fake/mock data.
+- [x] Integrate with [json-server](https://github.com/typicode/json-server) for fake/mock data.
