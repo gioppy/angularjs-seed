@@ -10,9 +10,9 @@ var htmlreplace = require('gulp-html-replace');
 var clean = require('gulp-clean');
 var concat = require('gulp-concat');
 var autoprefixer = require('autoprefixer');
-var watch = require('gulp-watch');
 var del = require('del');
 var runSequece = require('run-sequence');
+var exec = require('child_process').exec;
 
 var opt = require('./configs/dist.json');
 
@@ -36,7 +36,7 @@ gulp.task('combine', ['sass'], function() {
 });
 
 gulp.task('styles', ['combine'], function(){
-  return gulp.src('assets/styles/*.tmp.css')
+  var e = gulp.src('assets/styles/*.tmp.css')
     .pipe(cssmin({
       showLog:false
     }))
@@ -48,10 +48,9 @@ gulp.task('styles', ['combine'], function(){
     .pipe(gulp.dest((file) => {
       return file.base;
     }));
-});
-
-gulp.task('styles:remove:temp', ['styles'], function(){
   del(['assets/styles/*.tmp.css']);
+
+  return e;
 });
 
 gulp.task('fonts', function(){
@@ -86,23 +85,27 @@ gulp.task('scripts', function(){
 
 /* LOCAL PROCESS */
 
-gulp.task('local', function(){
-  return watch([
-    'assets/scss/*.scss',
-    'assets/scss/**/*.scss',
-    'assets/fonts/*.scss',
-    'assets/scripts/*.js',
-    '!assets/scripts/*.min.js',
-    'app/**/*.js',
-    '!app/**/*.min.js',
-    'index.html',
-    'app/**/*.html'
-  ], function(){
-    runSequece(
-      ['styles', 'fonts', 'scripts'],
-      'styles:remove:temp'
-    );
+gulp.task('local:lite-server', function(cb){
+  exec('npm run start', function (err, stdout, stderr) {
+    console.log(stdout);
+    console.log(stderr);
+    cb(err);
   });
+});
+
+gulp.task('local:watch', function(){
+  gulp.watch(['assets/scss/*.scss', 'assets/scss/**/*.scss'], ['styles']);
+  gulp.watch(['assets/fonts/*.scss'], ['fonts']);
+  gulp.watch(['assets/scripts/*.js', '!assets/scripts/*.min.js', 'app/**/*.js', '!app/**/*.min.js'], ['scripts']);
+});
+
+gulp.task('local', (cb) => {
+  runSequece(
+    ['styles', 'fonts', 'scripts'],
+    'local:watch',
+    'local:lite-server',
+    cb
+  );
 });
 
 /* DEV PROCESS */
@@ -125,24 +128,30 @@ gulp.task('struct', function(){
     .pipe(gulp.dest('dev'));
 });
 
-gulp.task('dev', function(){
-  return watch([
-    'assets/scss/*.scss',
-    'assets/scss/**/*.scss',
-    'assets/fonts/*.scss',
-    'assets/scripts/*.js',
-    '!assets/scripts/*.min.js',
-    'app/**/*.js',
-    '!app/**/*.min.js',
-    'index.html',
-    'app/**/*.html'
-  ], function(){
-    runSequece(
-      ['styles', 'fonts', 'scripts'],
-      'styles:remove:temp',
-      'struct'
-    );
+gulp.task('dev:lite-server', function(cb){
+  exec('npm run server', function (err, stdout, stderr) {
+    console.log(stdout);
+    console.log(stderr);
+    cb(err);
   });
+});
+
+gulp.task('dev:watch', function(){
+  gulp.watch(['assets/scss/*.scss', 'assets/scss/**/*.scss'], ['styles']);
+  gulp.watch(['assets/fonts/*.scss'], ['fonts']);
+  gulp.watch(['assets/scripts/*.js', '!assets/scripts/*.min.js', 'app/**/*.js', '!app/**/*.min.js'], ['scripts']);
+  gulp.watch(['index.html', 'app/**/*.html', 'app/**/*.min.js', 'assets/**/*.min.js', 'assets/**/*.min.css'], ['struct']);
+});
+
+gulp.task('dev', (cb) => {
+  runSequece(
+    'dev:clean',
+    ['styles', 'fonts', 'scripts'],
+    'struct',
+    'dev:watch',
+    'dev:lite-server',
+    cb
+  );
 });
 
 /* DIST PROCESS */
@@ -177,7 +186,7 @@ gulp.task('dist:scripts:bundle', function(){
 });
 
 gulp.task('html', function(){
-  return gulp.src(['app/**/*', '!app/**/*.js'])
+  return gulp.src('app/**/*')
     .pipe(gulp.dest('./dist/app'));
 });
 
@@ -197,7 +206,6 @@ gulp.task('dist', (cb) => {
   runSequece(
     'dist:clean',
     ['styles', 'fonts', 'scripts'],
-    'styles:remove:temp',
     ['dist:styles:vendor', 'dist:styles:bundle', 'dist:scripts:vendor', 'dist:scripts:bundle'],
     'images',
     ['html', 'index'],

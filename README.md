@@ -42,12 +42,10 @@ There is three main environments: **local**, **dev** and **dist**. To use any of
 
 **local** is used only on my courses, so you don't really need this!
 ```
-  npm run start
   gulp local
 ```
 **dev** is used for development. In this environment, there is a [lite-server](https://github.com/johnpapa/lite-server) that simulate a real web server. All the compiled files (Javscript and CSS) are automatically saved on _dev_ folder.
 ```
-  npm run server
   gulp dev
 ```
 **Important**: you don't edit or working on any files in this folder. The folder is re-created when you modify or add a file in the working directories.
@@ -116,7 +114,7 @@ the `dist.json` must be:
 
 This generat 4 files:
 - **assets/libraries/vendor.min.css**: this contain all the CSS from external (vendor) libraries;
-- **assets/libraries/vendor.min.js**: this contain all the javascripts from external (vendor) libraries;
+- **assets/libraries/vendor.min.js**: this contain all the javascripts from (external) vendor libraries;
 - **assets/styles/bundle.min.css**: this contain all CSS from the app (bundle);
 - **app/bundle.min.js**: this contain all the javascript from the app (bundle).
 
