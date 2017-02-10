@@ -1,0 +1,10 @@
+{
+  "bitwise": true,
+  "eqeqeq": true,
+  "freeze": true,
+  "latedef": true,
+  "newcap": true,
+  "unused": "strict",
+  "strict": true,
+  "esversion": 5
+}
