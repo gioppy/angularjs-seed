@@ -138,6 +138,15 @@ Once you have installed the package, you can start the server with
   npm run db
 ```
 The server run on localhost, on port 3002.
+### Optional: JSHint
+In the root project, there is a special file called `.jshintrc`. This file is a simple json object defined special rules for writing better JavaScript code. If you want this type of controls (and I encourage you to use!), you must install globally the `eslint` package:
+```
+  npm install -g eslint
+```
+**Note**: the linting is setting on EcmaScript 5, not ES6. If you want to use the new structure and possibilities of ES6, you can substitute `"esversion"` in `.jshintrc` form `5` to `6`.
+
+For more information on **JSHint** visit the page [http://jshint.com/](http://jshint.com/)
 ## TODO
 - [ ] Add testing frameworks
 - [x] Integrate with [json-server](https://github.com/typicode/json-server) for fake/mock data.
+- [x] Add JSHint support
