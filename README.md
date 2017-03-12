@@ -150,3 +150,4 @@ For more information on **JSHint** visit the page [http://jshint.com/](http://js
 - [ ] Add testing frameworks
 - [x] Integrate with [json-server](https://github.com/typicode/json-server) for fake/mock data.
 - [x] Add JSHint support
+- [x] Generate SourceMaps for Javascript and notify the error via Notification and log on console

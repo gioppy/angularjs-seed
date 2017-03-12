@@ -4,6 +4,7 @@ var cmq = require('gulp-combine-mq');
 var rename = require('gulp-rename');
 var cssmin = require('gulp-cssmin');
 var uglify = require('gulp-uglify');
+var sourcemaps = require('gulp-sourcemaps');
 var postcss = require('gulp-postcss');
 var imageMin = require('gulp-imagemin');
 var htmlreplace = require('gulp-html-replace');
@@ -13,6 +14,7 @@ var autoprefixer = require('autoprefixer');
 var watch = require('gulp-watch');
 var del = require('del');
 var runSequece = require('run-sequence');
+var notify = require('gulp-notify');
 
 var opt = require('./configs/dist.json');
 
@@ -65,6 +67,7 @@ gulp.task('fonts', function(){
 
 gulp.task('scripts', function(){
   return gulp.src(['assets/scripts/*.js', '!assets/scripts/*.min.js', 'app/**/*.js', '!app/**/*.min.js'])
+    .pipe(sourcemaps.init())
     .pipe(uglify({
       mangle: true,
       compress: {
@@ -77,8 +80,18 @@ gulp.task('scripts', function(){
         join_vars: true
       },
       preserveComments: function(){return false;}
-    }))
+    }).on('error', notify.onError((e) => {
+      var msg = e.cause.message;
+      var fileName = e.cause.filename;
+      console.log(e.cause);
+      return {
+        title: `Error on ${fileName}`,
+        message: e.message,
+        wait: true
+      };
+    })))
     .pipe(rename({suffix: '.min'}))
+    .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest(function(file){
       return file.base;
     }));
@@ -117,6 +130,7 @@ gulp.task('struct', function(){
     'index.html',
     '!**/*.md',
     'app/**/*.min.js',
+    'app/**/*.map',
     'app/**/*.html',
     'assets/**/*.min.js',
     'assets/**/*.min.css',
