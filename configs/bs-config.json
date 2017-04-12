@@ -1,4 +1,5 @@
 {
   "server": { "baseDir": "./dev" },
-  "reloadDelay": 500
+  "reloadDelay": 500,
+  "reloadDebounce": 500
 }
